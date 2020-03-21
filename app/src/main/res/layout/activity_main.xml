@@ -15,11 +15,13 @@
         android:orientation="horizontal">
 
         <AutoCompleteTextView
-            android:id="@+id/cityName"
+            android:id="@+id/cityNameEditText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:ems="10"
+            android:imeOptions="actionSearch"
+            android:completionThreshold="0"
             android:hint="@string/city_hint"
             android:inputType="textPersonName" />
 
@@ -29,7 +31,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
-            app:srcCompat="@drawable/ic_icons_search" />
+            app:srcCompat="@drawable/ic_icons_search"
+            android:onClick="changeCity"/>
     </LinearLayout>
 
     <ImageView
@@ -38,7 +41,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="right"
-        app:srcCompat="@drawable/ic_sunny" />
+        app:srcCompat="@drawable/ic_sunny"/>
 
     <TextView
         android:id="@+id/degreesTextView"

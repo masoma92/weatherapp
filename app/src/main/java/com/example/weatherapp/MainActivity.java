@@ -2,10 +2,17 @@ package com.example.weatherapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,21 +34,35 @@ public class MainActivity extends AppCompatActivity {
     boolean isDegrees = true;
 
     AutoCompleteTextView cityName;
-    TextView degrees;
+    TextView degrees, cityTextView;
 
     ImageView weatherIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        try
-        {
-            this.getSupportActionBar().hide();
-        }
-        catch (NullPointerException e){}
         setContentView(R.layout.activity_main);
 
-        cityName = findViewById(R.id.cityName);
+        cityName = findViewById(R.id.cityNameEditText);
+        cityName.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event){
+                cityName.showDropDown();
+                return false;
+            }
+        });
+
+        cityName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    changeCity(v);
+                    return true;
+                }
+                return false;
+            }
+        });
         String[] cities = getResources().getStringArray(R.array.cities_array);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, cities);
@@ -49,8 +70,23 @@ public class MainActivity extends AppCompatActivity {
 
         degrees = findViewById(R.id.degreesTextView);
         weatherIcon = findViewById(R.id.weatherIcon);
+        cityTextView = findViewById(R.id.cityTextView);
 
         new weatherTask().execute("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric" + "&appid=" + API_KEY);
+
+
+    }
+
+    public void changeCity(View v) {
+        this.CITY = this.cityName.getText().toString();
+        this.cityTextView.setText(this.CITY);
+        new weatherTask().execute("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric" + "&appid=" + API_KEY);
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+
     }
 
     class weatherTask extends AsyncTask<String, Void, String>{
@@ -126,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();
             }
+
         }
     }
 }
