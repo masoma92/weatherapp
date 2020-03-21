@@ -4,7 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,13 +14,6 @@ import com.androdocs.httprequest.HttpRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isDegrees = true;
 
-    TextView cityName, degrees;
+    AutoCompleteTextView cityName;
+    TextView degrees;
 
     ImageView weatherIcon;
 
@@ -47,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         cityName = findViewById(R.id.cityName);
+        String[] cities = getResources().getStringArray(R.array.cities_array);
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, cities);
+        cityName.setAdapter(adapter);
+
         degrees = findViewById(R.id.degreesTextView);
         weatherIcon = findViewById(R.id.weatherIcon);
 

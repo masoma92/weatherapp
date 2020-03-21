@@ -1,4 +1,204 @@
 <resources>
     <string name="app_name">Weather App</string>
     <string name="city_hint">Search for a city...</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string-array name="cities_array">
+        <item>Abu Dhabi</item>
+        <item>Abuja</item>
+        <item>Accra</item>
+        <item>Addis Ababa</item>
+        <item>Algiers</item>
+        <item>Amman</item>
+        <item>Amsterdam</item>
+        <item>Andorra la Vella</item>
+        <item>Ankara</item>
+        <item>Antananarivo</item>
+        <item>Apia</item>
+        <item>Ashgabat</item>
+        <item>Asmara</item>
+        <item>Astana</item>
+        <item>Asuncion</item>
+        <item>Athens</item>
+        <item>Baghdad</item>
+        <item>Baku</item>
+        <item>Bamako</item>
+        <item>Bandar Seri Begawan</item>
+        <item>Bangkok</item>
+        <item>Bangui</item>
+        <item>Banjul</item>
+        <item>Basseterre</item>
+        <item>Beijing</item>
+        <item>Beirut</item>
+        <item>Belgrade</item>
+        <item>Belmopan</item>
+        <item>Berlin</item>
+        <item>Bern</item>
+        <item>Bishkek</item>
+        <item>Bissau</item>
+        <item>Bogota</item>
+        <item>Brasilia</item>
+        <item>Bratislava</item>
+        <item>Brazzaville</item>
+        <item>Bridgetown</item>
+        <item>Brussels</item>
+        <item>Bucharest</item>
+        <item>Budapest</item>
+        <item>Buenos Aires</item>
+        <item>Bujumbura</item>
+        <item>Cairo</item>
+        <item>Canberra</item>
+        <item>Caracas</item>
+        <item>Castries</item>
+        <item>Chisinau</item>
+        <item>Colombo, Sri Jayewardenepura Kotte</item>
+        <item>Conakry</item>
+        <item>Copenhagen</item>
+        <item>Dakar</item>
+        <item>Damascus</item>
+        <item>Dhaka</item>
+        <item>Dili</item>
+        <item>Djibouti</item>
+        <item>Dodoma</item>
+        <item>Doha</item>
+        <item>Dublin</item>
+        <item>Dushanbe</item>
+        <item>Freetown</item>
+        <item>Funafuti</item>
+        <item>Gaborone</item>
+        <item>Georgetown</item>
+        <item>Guatemala City</item>
+        <item>Hanoi</item>
+        <item>Harare</item>
+        <item>Havana</item>
+        <item>Helsinki</item>
+        <item>Honiara</item>
+        <item>Islamabad</item>
+        <item>Jakarta</item>
+        <item>Jerusalem*</item>
+        <item>Juba</item>
+        <item>Kabul</item>
+        <item>Kampala</item>
+        <item>Kathmandu</item>
+        <item>Khartoum</item>
+        <item>Kigali</item>
+        <item>Kingston</item>
+        <item>Kingstown</item>
+        <item>Kinshasa</item>
+        <item>Kuala Lumpur</item>
+        <item>Kuwait City</item>
+        <item>Kyiv</item>
+        <item>La Paz, Sucre</item>
+        <item>Libreville</item>
+        <item>Lilongwe</item>
+        <item>Lima</item>
+        <item>Lisbon</item>
+        <item>Ljubljana</item>
+        <item>Lome</item>
+        <item>London</item>
+        <item>Luanda</item>
+        <item>Lusaka</item>
+        <item>Luxembourg</item>
+        <item>Madrid</item>
+        <item>Majuro</item>
+        <item>Malabo</item>
+        <item>Male</item>
+        <item>Managua</item>
+        <item>Manama</item>
+        <item>Manila</item>
+        <item>Maputo</item>
+        <item>Maseru</item>
+        <item>Mbabane</item>
+        <item>Melekeok</item>
+        <item>Mexico City</item>
+        <item>Minsk</item>
+        <item>Mogadishu</item>
+        <item>Monaco</item>
+        <item>Monrovia</item>
+        <item>Montevideo</item>
+        <item>Moroni</item>
+        <item>Moscow</item>
+        <item>Muscat</item>
+        <item>N’Djamena</item>
+        <item>Nairobi</item>
+        <item>Nassau</item>
+        <item>Naypyidaw</item>
+        <item>New Delhi</item>
+        <item>Niamey</item>
+        <item>Nicosia</item>
+        <item>Nouakchott</item>
+        <item>Nuku’alofa</item>
+        <item>Oslo</item>
+        <item>Ottawa</item>
+        <item>Ouagadougou</item>
+        <item>Palikir</item>
+        <item>Panama City</item>
+        <item>Paramaribo</item>
+        <item>Paris</item>
+        <item>Phnom Penh</item>
+        <item>Podgorica</item>
+        <item>Port Louis</item>
+        <item>Port Moresby</item>
+        <item>Port-au-Prince</item>
+        <item>Port-of-Spain</item>
+        <item>Porto-Novo</item>
+        <item>Port-Vila</item>
+        <item>Prague</item>
+        <item>Praia</item>
+        <item>Pretoria, Cape Town, Bloemfontein</item>
+        <item>Pristina</item>
+        <item>Pyongyang</item>
+        <item>Quito</item>
+        <item>Rabat</item>
+        <item>Reykjavik</item>
+        <item>Riga</item>
+        <item>Riyadh</item>
+        <item>Rome</item>
+        <item>Roseau</item>
+        <item>Saint George’s</item>
+        <item>Saint John’s</item>
+        <item>San Jose</item>
+        <item>San Marino</item>
+        <item>San Salvador</item>
+        <item>Sanaa</item>
+        <item>Santiago</item>
+        <item>Santo Domingo</item>
+        <item>Sao Tome</item>
+        <item>Sarajevo</item>
+        <item>Seoul</item>
+        <item>Singapore</item>
+        <item>Skopje</item>
+        <item>Sofia</item>
+        <item>Stockholm</item>
+        <item>Suva</item>
+        <item>Taipei</item>
+        <item>Tallinn</item>
+        <item>Tarawa Atoll</item>
+        <item>Tashkent</item>
+        <item>Tbilisi</item>
+        <item>Tegucigalpa</item>
+        <item>Tehran</item>
+        <item>Thimphu</item>
+        <item>Tirana</item>
+        <item>Tokyo</item>
+        <item>Tripoli</item>
+        <item>Tunis</item>
+        <item>Ulaanbaatar</item>
+        <item>Vaduz</item>
+        <item>Valletta</item>
+        <item>Vatican City</item>
+        <item>Victoria</item>
+        <item>Vienna</item>
+        <item>Vientiane</item>
+        <item>Vilnius</item>
+        <item>Warsaw</item>
+        <item>Washington D.C.</item>
+        <item>Wellington</item>
+        <item>Windhoek</item>
+        <item>Yamoussoukro</item>
+        <item>Yaounde</item>
+        <item>Yaren District</item>
+        <item>Yerevan</item>
+        <item>Zagreb</item>
+    </string-array>
 </resources>
