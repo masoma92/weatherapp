@@ -15,6 +15,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androdocs.httprequest.HttpRequest;
 
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
         cityName = findViewById(R.id.cityNameEditText);
         cityName.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         String[] cities = getResources().getStringArray(R.array.cities_array);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, cities);
@@ -72,22 +74,30 @@ public class MainActivity extends AppCompatActivity {
         weatherIcon = findViewById(R.id.weatherIcon);
         cityTextView = findViewById(R.id.cityTextView);
 
+
         new weatherTask().execute("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric" + "&appid=" + API_KEY);
+
+
 
 
     }
 
     public void changeCity(View v) {
         this.CITY = this.cityName.getText().toString();
-        this.cityTextView.setText(this.CITY);
-        new weatherTask().execute("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric" + "&appid=" + API_KEY);
-        InputMethodManager inputManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(this.CITY.isEmpty()){
+            showToast("No city added.");
+            hideKeyboard();
+            return;
+        }
 
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        this.cityTextView.setText(this.CITY);
+        this.CITY = this.CITY.replaceAll(" ", "");
+        new weatherTask().execute("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric" + "&appid=" + API_KEY);
+        hideKeyboard();
 
     }
+
+
 
     class weatherTask extends AsyncTask<String, Void, String>{
         @Override
@@ -160,9 +170,29 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             } catch (JSONException | ParseException e) {
+                showToast("No city found!");
                 e.printStackTrace();
             }
 
         }
+
+
     }
+    private void showToast(String msg){
+        Context context = getApplicationContext();
+        CharSequence text = msg;
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    private void hideKeyboard(){
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
 }
