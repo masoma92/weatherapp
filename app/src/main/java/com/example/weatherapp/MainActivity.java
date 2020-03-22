@@ -3,6 +3,8 @@ package com.example.weatherapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -22,8 +24,6 @@ import com.androdocs.httprequest.HttpRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -33,9 +33,10 @@ public class MainActivity extends AppCompatActivity {
     String CITY = "Budapest";
 
     boolean isDegrees = true;
+    String degreesValue = "°C";
 
     AutoCompleteTextView cityName;
-    TextView degrees, cityTextView;
+    TextView degrees, cityTextView, mainWeatherValue, minTempValue, maxTempValue, windSpeedValue, humidityValue;
 
     ImageView weatherIcon;
 
@@ -73,13 +74,32 @@ public class MainActivity extends AppCompatActivity {
         degrees = findViewById(R.id.degreesTextView);
         weatherIcon = findViewById(R.id.weatherIcon);
         cityTextView = findViewById(R.id.cityTextView);
+        minTempValue = findViewById(R.id.mintTempValue);
+        maxTempValue = findViewById(R.id.maxTempValue);
+        humidityValue = findViewById(R.id.humidityValue);
+        windSpeedValue = findViewById(R.id.windSpeedValue);
+        mainWeatherValue = findViewById(R.id.mainWeatherTextView);
 
 
-        new weatherTask().execute("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric" + "&appid=" + API_KEY);
+        new weatherTask().execute("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric&appid=" + API_KEY);
 
+    }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        View v = getCurrentFocus();
 
+        if (v != null && (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) && v instanceof EditText &&
+                !v.getClass().getName().startsWith("android.webkit.")) {
+            int scrcoords[] = new int[2];
+            v.getLocationOnScreen(scrcoords);
+            float x = ev.getRawX() + v.getLeft() - scrcoords[0];
+            float y = ev.getRawY() + v.getTop() - scrcoords[1];
 
+            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom())
+                hideKeyboard();
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     public void changeCity(View v) {
@@ -92,11 +112,26 @@ public class MainActivity extends AppCompatActivity {
 
         this.cityTextView.setText(this.CITY);
         this.CITY = this.CITY.replaceAll(" ", "");
-        new weatherTask().execute("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric" + "&appid=" + API_KEY);
+        new weatherTask().execute("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric&appid=" + API_KEY);
         hideKeyboard();
 
     }
 
+    public void mapOnClick(View view) {
+        if(CITY != null || !CITY.isEmpty()){
+            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+            intent.putExtra("CITY", CITY);
+            startActivity(intent);
+        }
+    }
+
+    public void wikiOnClick(View view) {
+        if (CITY == null || CITY.equals("")) return;
+        String url = "https://hu.wikipedia.org/wiki/"+CITY;
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
 
 
     class weatherTask extends AsyncTask<String, Void, String>{
@@ -108,46 +143,46 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+
             try {
+                setEndOfTemp();
                 JSONObject jsonObj = new JSONObject(result);
                 JSONObject main = jsonObj.getJSONObject("main");
                 JSONObject weather = jsonObj.getJSONArray("weather").getJSONObject(0);
 
-                Long updatedAt = jsonObj.getLong("dt");
-                String temp = main.getString("temp");
-                temp = temp.substring(0,temp.indexOf("."));
-                String tempMin = "Min Temp: " + main.getString("temp_min") + "°C";
-                String tempMax = "Max Temp: " + main.getString("temp_max") + "°C";
-                String pressure = main.getString("pressure");
+                String temp = Integer.toString((int)Double.parseDouble(main.getString("temp")));
+
+                String tempMin = ((int)Double.parseDouble(main.getString("temp_min"))) + degreesValue;
+                String tempMax = ((int)Double.parseDouble(main.getString("temp_max"))) + degreesValue;
                 String humidity = main.getString("humidity");
 
                 String mainWeather = weather.getString("main");
-                String weatherDescription = weather.getString("description");
+                String windSpeed = jsonObj.getJSONObject("wind").getString("speed");
 
-                if(isDegrees)
-                    degrees.setText(temp + "°C");
-                else
-                    degrees.setText(temp + "F");
+                degrees.setText(temp + degreesValue);
+                minTempValue.setText(tempMin);
+                maxTempValue.setText(tempMax);
+                humidityValue.setText(humidity+"%");
+                mainWeatherValue.setText(mainWeather);
+                windSpeedValue.setText(windSpeed + " km/h");
 
                 boolean isMorning = false;
 
                 Date currentTime = Calendar.getInstance().getTime();
 
-                String string1 = "06:00:00";
-                Date time1 = new SimpleDateFormat("HH:mm:ss").parse(string1);
+                Date morning = createDate(6);
+                Date evening = createDate(18);
 
-                String string2 = "18:00:00";
-                Date time2 = new SimpleDateFormat("HH:mm:ss").parse(string2);
 
-                if (currentTime.after(time1) && currentTime.before(time2))
+                if (currentTime.after(morning) && currentTime.before(evening))
                     isMorning = true;
 
                 switch (mainWeather){
                     case "Thunderstorm":
-                        weatherIcon.setImageResource(R.drawable.ic_rainy);
+                        weatherIcon.setImageResource(R.drawable.ic_thunderstorm);
                         break;
                     case "Drizzle":
-                        weatherIcon.setImageResource(R.drawable.ic_rainy);
+                        weatherIcon.setImageResource(R.drawable.ic_drizzle);
                         break;
                     case "Rain":
                         weatherIcon.setImageResource(R.drawable.ic_rainy);
@@ -169,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-            } catch (JSONException | ParseException e) {
+            } catch (JSONException e) {
                 showToast("No city found!");
                 e.printStackTrace();
             }
@@ -193,6 +228,25 @@ public class MainActivity extends AppCompatActivity {
 
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    private Date createDate(int hours){
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, hours);// for 6 hour
+        calendar.set(Calendar.MINUTE, 0);// for 0 min
+        calendar.set(Calendar.SECOND, 0);// for 0 sec
+        return  calendar.getTime();
+    }
+
+    private void setEndOfTemp(){
+        if(isDegrees){
+            degreesValue = " °C";
+        }
+        else{
+            degreesValue = " F";
+        }
     }
 
 }

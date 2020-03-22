@@ -2,6 +2,19 @@
     <string name="app_name">Weather App</string>
     <string name="city_hint">Search for a city...</string>
     <string name="title_activity_maps">Map</string>
+    <string name="minimum">Minimum:</string>
+    <string name="defaultmin">2</string>
+    <string name="maximum">Maximum:</string>
+    <string name="defaultmax">10</string>
+    <string name="wind_speed">Wind speed:</string>
+    <string name="defaultwindspeed">6.2 km/h</string>
+    <string name="humidity">Humidity:</string>
+    <string name="defaulthumidity">30%</string>
+    <string name="map">MAP</string>
+    <string name="wiki">WIKI</string>
+    <string name="defaultcity">Budapest</string>
+    <string name="defaultdegree">21℃</string>
+    <string name="defaultmainweather">Sunny</string>
 
     <string-array name="cities_array">
         <item>Abu Dhabi</item>
